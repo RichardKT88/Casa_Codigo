@@ -9,26 +9,30 @@ namespace CasaDoCodigo.Repositories
 {
     public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
     {
-        public ProdutoRepository(ApplicationContext contexto) : base(contexto)
+        private readonly ICategoriaRepository categoriaRepository;
+
+        public ProdutoRepository(ApplicationContext contexto, ICategoriaRepository categoriaRepository) : base(contexto)
         {
+            this.categoriaRepository = categoriaRepository;
         }
 
-        public IList<Produto> GetProdutos()
+        public async Task<IList<Produto>> GetProdutos()
         {
-            return dbSet.ToList();
+            return await dbSet.Include(p => p.Categoria).ToListAsync();
         }
 
-        public void SaveProdutos(List<Livro> livros)
+        public async Task SaveProdutos(List<Livro> livros)
         {
             foreach (var livro in livros)
             {
                 
                 if (!dbSet.Where(p => p.Codigo == livro.Codigo).Any()) 
                 {
-                    dbSet.Add(new Produto(livro.Codigo, livro.Nome, livro.Preco));
+                    Categoria categoria = await categoriaRepository.SaveCategoria(livro.Categoria);
+                    dbSet.Add(new Produto(livro.Codigo, livro.Nome, livro.Preco, categoria));
                 }                
             }
-            contexto.SaveChanges();
+            await contexto.SaveChangesAsync();
         }
     }
     public class Livro
@@ -36,5 +40,7 @@ namespace CasaDoCodigo.Repositories
         public string Codigo { get; set; }
         public string Nome { get; set; }
         public Decimal Preco { get; set; }
+        public string Categoria { get; set; }
+
     }
 }

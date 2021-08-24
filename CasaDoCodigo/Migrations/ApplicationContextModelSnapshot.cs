@@ -11,10 +11,9 @@ using System;
 namespace CasaDoCodigo.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210513193032_Modelo")]
-    partial class Modelo
+    partial class ApplicationContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +44,8 @@ namespace CasaDoCodigo.Migrations
                         .IsRequired();
 
                     b.Property<string>("Nome")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("Telefone")
                         .IsRequired();
@@ -56,6 +56,19 @@ namespace CasaDoCodigo.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cadastro");
+                });
+
+            modelBuilder.Entity("CasaDoCodigo.Models.Categoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Nome")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categoria");
                 });
 
             modelBuilder.Entity("CasaDoCodigo.Models.ItemPedido", b =>
@@ -100,6 +113,8 @@ namespace CasaDoCodigo.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("CategoriaId");
+
                     b.Property<string>("Codigo")
                         .IsRequired();
 
@@ -109,6 +124,8 @@ namespace CasaDoCodigo.Migrations
                     b.Property<decimal>("Preco");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
 
                     b.ToTable("Produto");
                 });
@@ -131,6 +148,14 @@ namespace CasaDoCodigo.Migrations
                     b.HasOne("CasaDoCodigo.Models.Cadastro", "Cadastro")
                         .WithOne("Pedido")
                         .HasForeignKey("CasaDoCodigo.Models.Pedido", "CadastroId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CasaDoCodigo.Models.Produto", b =>
+                {
+                    b.HasOne("CasaDoCodigo.Models.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

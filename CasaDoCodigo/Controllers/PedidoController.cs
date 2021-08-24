@@ -3,6 +3,7 @@ using CasaDoCodigo.Models.ViewModels;
 using CasaDoCodigo.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CasaDoCodigo.Controllers
 {
@@ -18,9 +19,9 @@ namespace CasaDoCodigo.Controllers
             this.pedidoRepository = pedidoRepository;
             this.itemPedidoRepository = itemPedidoRepository;
         }
-        public IActionResult Carrossel()
+        public async Task<IActionResult> Carrossel()
         {
-            return View(produtoRepository.GetProdutos());
+            return View(await produtoRepository.GetProdutos());
         }
         public IActionResult Carrinho(string codigo)
         {
