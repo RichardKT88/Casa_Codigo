@@ -12,7 +12,7 @@
                 @*Modificando o form para apontar para action de produtos*@
                 <form asp-action="BuscaDeProdutos">
                     <div class="input-group col-md-12">
-                        <input type="text" name="pesquisa" class="form-control input-lg" placeholder="categoria ou produto" id="Pesquisa" asp-for="@Model.Pesquisa" value="" />
+                        <input type="text" name="pesquisa" class="form-control input-lg" placeholder="categoria ou produto" id="Pesquisa" asp-for="@Model.Pesquisa" />
                         <span class="input-group-btn">
                             <button class="btn btn-info btn-lg" type="submit">
                                 <i class="glyphicon glyphicon-search"></i>
@@ -42,7 +42,7 @@
 
             <h3>@categoria.Nome</h3>
 
-            <div id="#my-carousel-@categoria.Id" class="carousel slide" data-ride="carousel">
+            <div id="my-carousel-@(categoria.Id)" class="carousel slide" data-ride="carousel">
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
                     @{
@@ -83,16 +83,20 @@
 
 
                 </div>
-
-                <!-- Controls -->
-                <a class="left carousel-control" href="#my-carousel-@categoria.Id" role="button" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="right carousel-control" href="#my-carousel-@categoria.Id" role="button" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
+                @{
+                    if (paginas > 1)
+                    {
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#my-carousel-@(categoria.Id)" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#my-carousel-@(categoria.Id)" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    }
+                }
             </div>
         }
     }
