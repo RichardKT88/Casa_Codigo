@@ -12,12 +12,14 @@ namespace CasaDoCodigo.Controllers
         private readonly IProdutoRepository produtoRepository;
         private readonly IPedidoRepository pedidoRepository;
         private readonly IItemPedidoRepository itemPedidoRepository;
+        private readonly ICategoriaRepository categoriaRepository;
 
-        public PedidoController(IProdutoRepository produtoRepository, IPedidoRepository pedidoRepository, IItemPedidoRepository itemPedidoRepository)
+        public PedidoController(IProdutoRepository produtoRepository, IPedidoRepository pedidoRepository, IItemPedidoRepository itemPedidoRepository, ICategoriaRepository categoriaRepository)
         {
             this.produtoRepository = produtoRepository;
             this.pedidoRepository = pedidoRepository;
             this.itemPedidoRepository = itemPedidoRepository;
+            this.categoriaRepository = categoriaRepository;
         }
         public async Task<IActionResult> Carrossel()
         {
@@ -59,6 +61,30 @@ namespace CasaDoCodigo.Controllers
         public UpdateQuantidadeResponse UpdateQuantidade([FromBody]ItemPedido itemPedido)
         {
             return pedidoRepository.UpdateQuantidade(itemPedido);
+        }
+
+        //Overload no método GetProdutos para aceitar uma string de pesquisa
+        public async Task<IActionResult> BuscaDeProdutos(string pesquisa)
+        {
+            //Adaptando a action de busca de produtos para aceitar um parâmetro de pesquisa
+            //Senão estiver passando dados para a pesquisa
+            if (string.IsNullOrWhiteSpace(pesquisa))
+            {
+                var viewPesquisaEmBranco = new PesquisaViewModel(await produtoRepository.GetProdutos(), true);
+                return View(viewPesquisaEmBranco);
+            }
+
+            //Retorna a view em branco senão encontrar dados
+            if (produtoRepository.GetProdutos(pesquisa).Result.Count == 0)
+            {
+                var viewEmBranco = new PesquisaViewModel(false);
+                return View(viewEmBranco);
+            }
+
+            //Realizar a busca por texto
+            var viewPesquisaPorTexto = new PesquisaViewModel(await produtoRepository.GetProdutos(pesquisa), true);
+
+            return View(viewPesquisaPorTexto);
         }
     }
 }
