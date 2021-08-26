@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace CasaDoCodigo.Service
+namespace CasaDoCodigo.Services.Data
 {
     interface IDataService
     {
