@@ -31,7 +31,6 @@ namespace CasaDoCodigo.Controllers
             {
                 pedidoRepository.AddItem(codigo);
             }
-            //Pedido pedido = pedidoRepository.GetPedido().Itens;
             List<ItemPedido> itens = pedidoRepository.GetPedido().Itens;
             CarrinhoViewModel carrinhoViewModel = new CarrinhoViewModel(itens);
             return base.View(carrinhoViewModel);

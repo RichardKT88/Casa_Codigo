@@ -1,6 +1,5 @@
 ﻿using CasaDoCodigo.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,12 +47,5 @@ namespace CasaDoCodigo.Repositories
             await contexto.SaveChangesAsync();
         }
     }
-    public class Livro
-    {
-        public string Codigo { get; set; }
-        public string Nome { get; set; }
-        public Decimal Preco { get; set; }
-        public string Categoria { get; set; }
-
-    }
+   
 }
