@@ -1,6 +1,6 @@
 ﻿using System;
 using CasaDoCodigo.Repositories;
-using CasaDoCodigo.Service;
+using CasaDoCodigo.Services.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
